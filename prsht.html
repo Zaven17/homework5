@@ -1,0 +1,82 @@
+<canvas id="prsht"></canvas>
+<script>
+  
+  
+  const canvas=document.getElementById("prsht");
+  const context=canvas.getContext("2d"); 
+  const rand = function(num) {
+  return Math.floor(Math.random() * num) + 1;
+};
+  
+
+
+
+
+  const createBoxes = function(count, canvasWidth, canvasHeight) {
+    colorArray=["blue","green","purple","red","brown","orange","INDIANRED","silver"];
+	const data = [];
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;    
+        for(let i = 0; i < count; i++){
+            data[i] = {  
+            x: rand(canvas.width - 30),
+            y: rand(canvas.height - 30),  
+            width: 30,
+            height: 30,
+            xDelta: rand(15), 
+            yDelta: rand(15), 
+            color: colorArray[rand(colorArray.length)-1],
+            draw: function() {
+            context.fillStyle = this.color;
+            context.fillRect(this.x, this.y, this.width, this.height);
+        },
+            update: function() {
+
+            if(this.x + this.width >= canvas.width || this.x <= 0){
+                this.xDelta *= -1;
+                this.color = colorArray[rand(colorArray.length)-1] 
+            };
+            if(this.y + this.height >= canvas.height || this.y <= 0){
+                this.yDelta *= -1;
+                this.color = colorArray[rand(colorArray.length)-1] 
+            };
+                     
+            this.x += this.xDelta;
+            this.y += this.yDelta;
+            
+            
+            
+                },
+            };
+        };
+ 
+
+      const draw = function(){
+       context.clearRect(0,0,canvas.width,canvas.height)
+       for(let i = 0; i<count; i++){
+         data[i].draw()
+       };
+      };
+        
+        const update = function(){
+         for(let i = 0; i<count; i++){
+         data[i].update()
+       };
+        };
+
+
+        const loop = function(){
+            draw();
+            update();
+            requestAnimationFrame(loop);
+
+        };
+
+        loop();
+
+
+        
+      };
+  
+  createBoxes(200,1500,700)
+</script>			
